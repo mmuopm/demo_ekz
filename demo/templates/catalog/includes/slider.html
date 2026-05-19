@@ -1,0 +1,26 @@
+{% load static %}
+<section class="hero-slider mt-4" data-slider data-interval="3000" aria-label="Галерея">
+    <div class="slider-viewport">
+        <div class="slider-track">
+            <div class="slider-slide active">
+                <img src="{% static 'images/image 1.svg' %}" alt="Аудитория" width="800" height="400">
+                <span class="slider-caption">Пленарные заседания</span>
+            </div>
+            <div class="slider-slide">
+                <img src="{% static 'images/image2 1.svg' %}" alt="Коворкинг" width="800" height="400">
+                <span class="slider-caption">Коворкинг</span>
+            </div>
+            <div class="slider-slide">
+                <img src="{% static 'images/image3 1.svg' %}" alt="Кинозал" width="800" height="400">
+                <span class="slider-caption">Кинозалы</span>
+            </div>
+            <div class="slider-slide">
+                <img src="{% static 'images/image4 1.svg' %}" alt="Конференция" width="800" height="400">
+                <span class="slider-caption">Конференции РФ</span>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="slider-btn slider-prev" data-slider-prev>&lsaquo;</button>
+    <button type="button" class="slider-btn slider-next" data-slider-next>&rsaquo;</button>
+    <div class="slider-dots" data-slider-dots></div>
+</section>

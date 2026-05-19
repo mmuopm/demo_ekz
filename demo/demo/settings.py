@@ -111,9 +111,9 @@ SESSION_USER_KEY = "catalog_user_id"
 SESSION_ADMIN_KEY = "catalog_admin"
 LOGIN_URL = "catalog:login"
 
-MESSAGE_TAGS = {
-    message_constants.ERROR: "danger",
-}
+#MESSAGE_TAGS = {
+# message_constants.ERROR: "danger",
+#}
 
 
 # Default primary key field type
