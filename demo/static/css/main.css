@@ -12,7 +12,7 @@
   --text: #333;
   --muted: #666;
   --border: #BDE0C5;
-  --radius: 6px;
+  --radius: 15px;
 }
 
 * { box-sizing: border-box; }
@@ -37,7 +37,6 @@ body.site-body {
 
 .brand-logo {
   font-weight: 700 !important;
-  letter-spacing: 0.03em;
   color: var(--primary);
   text-decoration: none;
 }
@@ -90,14 +89,30 @@ body.site-body {
   border: 1px solid var(--border);
 }
 
+.logo a{
+  transition: color .15s ease-in-out;
+}
+
+a {
+  color: var(--primary)
+}
+
+.btn {
+  border-radius: var(--radius);
+}
+
+.btn:hover {
+  border: 1px solid #fff;
+}
+
 .btn-primary {
-  background: var(--primary);
-  border-color: var(--primary);
+  border-color: var(--card);
+  background: linear-gradient(to right, #28A745, #2E6E42, #343A40);
 }
 
 .btn-primary:hover {
-  background: var(--primary-dark);
-  border-color: var(--primary-dark);
+  background: linear-gradient(to right, #28A745, #2E6E42, #343A40);
+  border-color: var(--primary);
 }
 
 .btn-outline-primary {
@@ -122,11 +137,15 @@ body.site-body {
   color: var(--text);
 }
 
+.nav-link:hover {
+  color: var(--primary);
+}
+
 .hero-section {
   text-align: center;
   padding: 0.75rem 0 1.25rem;
 }
-0.8rem
+
 .hero-actions {
   display: flex;
   gap: 0.75rem;
@@ -213,7 +232,7 @@ body.site-body {
   left: 50%;
   display: flex;
   gap: 6px;
-  z-index: 5;
+  z-index: 5;  transition: opacity 0.4s ease;
 }
 
 .slider-dots button {

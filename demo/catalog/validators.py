@@ -50,7 +50,6 @@ class RegistrationValidator:
 
 
 class BookingDateValidator:
-    # дата как в задании: 18-05-2026
     @staticmethod
     def parse(date_str: str) -> datetime:
         match = DATE_DD_MM_YYYY.match(date_str.strip())
