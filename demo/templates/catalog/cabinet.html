@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Личный кабинет{% endblock %}
+{% block content %}
+<h1 class="page-title">Личный кабинет</h1>
+<p class="page-lead">Здравствуйте, {{ user.full_name }} ({{ user.login }})</p>
+{% include "catalog/includes/slider.html" %}
+<section class="mt-4">
+  <h2 class="section-title">История заявок</h2>
+  {% if bookings %}
+    {% for b in bookings %}
+    <article class="booking-card animate-fade-in">
+      <div class="d-flex justify-content-between flex-wrap gap-2">
+        <strong>#{{ b.id }} — {{ b.room.name }}</strong>
+        <span class="status-badge status-{{ b.status }}">{{ b.get_status_display }}</span>
+      </div>
+      <p class="body-text mb-1">Начало: {{ b.event_start|date:"d-m-Y H:i" }} | Оплата: {{ b.get_payment_method_display }}</p>
+      {% if b.can_leave_review and not b.review %}
+      <form method="post" action="{% url 'catalog:review' b.id %}" class="mt-2 review-form">
+        {% csrf_token %}
+        <label class="form-label">Отзыв</label>
+        <textarea name="text" class="form-control mb-2" rows="2" required></textarea>
+        <select name="rating" class="form-select mb-2" style="max-width:120px">
+          {% for i in "54321" %}<option value="{{ i }}">{{ i }}</option>{% endfor %}
+        </select>
+        <button class="btn btn-sm btn-outline-primary">Отправить отзыв</button>
+      </form>
+      {% elif b.review %}
+      <p class="body-text mt-2"><em>Отзыв:</em> {{ b.review.text }} (оценка {{ b.review.rating }})</p>
+      {% else %}
+      <p class="body-text mt-2 text-muted">Отзыв можно оставить после обработки заявки.</p>
+      {% endif %}
+    </article>
+    {% endfor %}
+  {% else %}
+    <p class="body-text">Заявок пока нет. <a href="{% url 'catalog:booking' %}">Оформить заявку</a></p>
+  {% endif %}
+</section>
+<a href="{% url 'catalog:booking' %}" class="btn btn-primary mt-3">Новая заявка</a>
+{% endblock %}

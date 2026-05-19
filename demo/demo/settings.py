@@ -1,4 +1,5 @@
 from pathlib import Path
+from django.contrib.messages import constants as message_constants
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -111,12 +112,6 @@ SESSION_USER_KEY = "catalog_user_id"
 SESSION_ADMIN_KEY = "catalog_admin"
 LOGIN_URL = "catalog:login"
 
-#MESSAGE_TAGS = {
-# message_constants.ERROR: "danger",
-#}
-
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+MESSAGE_TAGS = {
+    message_constants.ERROR: "danger",
+}

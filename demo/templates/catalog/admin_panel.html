@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Админ-панель{% endblock %}
+{% block extra_js %}<script src="{% static 'js/admin.js' %}"></script>{% endblock %}
+{% block content %}
+<h1 class="page-title">Панель администратора</h1>
+
+<form method="get" class="admin-filters row g-2 align-items-end">
+  <div class="col-md-3">
+    <label class="form-label">Статус</label>
+    <select name="status" class="form-select">
+      <option value="">Все</option>
+      {% for v,l in status_choices %}
+      <option value="{{ v }}" {% if filters.status == v %}selected{% endif %}>{{ l }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Помещение</label>
+    <select name="room" class="form-select">
+      <option value="">Все</option>
+      {% for r in rooms %}
+      <option value="{{ r.id }}" {% if filters.room == r.id|stringformat:"s" %}selected{% endif %}>{{ r.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Поиск (логин, ФИО)</label>
+    <input name="q" class="form-control" value="{{ filters.q }}" placeholder="Поиск...">
+  </div>
+  <div class="col-md-2">
+    <label class="form-label">Сортировка</label>
+    <select name="sort" class="form-select">
+      <option value="-created" {% if filters.sort == "-created" %}selected{% endif %}>Сначала новые</option>
+      <option value="date" {% if filters.sort == "date" %}selected{% endif %}>Дата ↑</option>
+      <option value="-date" {% if filters.sort == "-date" %}selected{% endif %}>Дата ↓</option>
+      <option value="status" {% if filters.sort == "status" %}selected{% endif %}>По статусу</option>
+    </select>
+  </div>
+  <div class="col-md-1">
+    <button class="btn btn-primary w-100">Применить</button>
+  </div>
+</form>
+
+<div class="admin-table-wrap">
+  <table class="table table-hover bg-white rounded shadow-sm">
+    <thead>
+      <tr>
+        <th>ID</th><th>Пользователь</th><th>ФИО</th><th>Помещение</th>
+        <th>Дата начала</th><th>Оплата</th><th>Статус</th><th>Изменить</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for b in page_obj %}
+      <tr>
+        <td>{{ b.id }}</td>
+        <td>{{ b.user.login }}</td>
+        <td>{{ b.user.full_name }}</td>
+        <td>{{ b.room.name }}</td>
+        <td>{{ b.event_start|date:"d-m-Y H:i" }}</td>
+        <td>{{ b.get_payment_method_display }}</td>
+        <td><span class="status-badge status-{{ b.status }}">{{ b.get_status_display }}</span></td>
+        <td>
+          <form method="post" class="d-flex gap-1 flex-wrap" data-status-form data-booking-id="{{ b.id }}">
+            {% csrf_token %}
+            <input type="hidden" name="booking_id" value="{{ b.id }}">
+            <select name="status" class="form-select form-select-sm" style="min-width:11rem">
+              {% for v,l in status_choices %}
+              <option value="{{ v }}" {% if b.status == v %}selected{% endif %}>{{ l }}</option>
+              {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-sm btn-primary">Сохранить</button>
+          </form>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="8" class="text-center text-muted">Заявок нет</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if page_obj.paginator.num_pages > 1 %}
+<nav aria-label="Страницы заявок">
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.previous_page_number }}&status={{ filters.status }}&room={{ filters.room }}&q={{ filters.q }}&sort={{ filters.sort }}">Назад</a>
+    </li>
+    {% endif %}
+    <li class="page-item disabled"><span class="page-link">Стр. {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span></li>
+    {% if page_obj.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.next_page_number }}&status={{ filters.status }}&room={{ filters.room }}&q={{ filters.q }}&sort={{ filters.sort }}">Вперёд</a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+
+<div class="modal fade" id="statusModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Смена статуса</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+      </div>
+      <div class="modal-body" id="statusModalBody">Подтвердить изменение статуса заявки?</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-primary" id="confirmStatusBtn">Подтвердить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<a href="{% url 'catalog:admin_logout' %}" class="btn btn-outline-secondary mt-3">Выйти</a>
+{% endblock %}

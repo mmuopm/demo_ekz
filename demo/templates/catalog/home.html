@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Главная — Каталог конференций РФ{% endblock %}
+
+{% block content %}
+<section class="hero-section animate-fade-in">
+    <h1 class="page-title">Каталог конференций РФ</h1>
+    <p class="page-lead">Бронирование аудиторий, коворкинга и кинозала для конференций.</p>
+    <div class="hero-actions">
+        <a href="{% url 'catalog:register' %}" class="btn btn-primary btn-lg">Зарегистрироваться</a>
+        <a href="{% url 'catalog:login' %}" class="btn btn-outline-primary btn-lg">Войти</a>
+    </div>
+</section>
+
+{% include "catalog/includes/slider.html" %}
+
+<section class="features-grid mt-5">
+    <article class="feature-card">
+        <h2 class="section-title">Выбор помещения</h2>
+        <p class="body-text">Выбор типа помещения под мероприятие.</p>
+    </article>
+    <article class="feature-card">
+        <h2 class="section-title">Онлайн-заявки</h2>
+        <p class="body-text">Дата, время, оплата наличными или переводом.</p>
+    </article>
+    <article class="feature-card">
+        <h2 class="section-title">Личный кабинет</h2>
+        <p class="body-text">Заявки и отзывы в личном кабинете.</p>
+    </article>
+</section>
+{% endblock %}

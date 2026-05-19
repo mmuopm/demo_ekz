@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Оформление заявки{% endblock %}
+{% block content %}
+<h1 class="page-title">Заявка на бронирование</h1>
+<p class="page-lead">Помещение из списка, дата ДД-ММ-ГГГГ, оплата: наличные или перевод.</p>
+<form method="post" class="card-form col-lg-8">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label class="form-label" for="room_id">Помещение</label>
+    <select class="form-select" id="room_id" name="room_id" required>
+      <option value="">— Выберите из списка —</option>
+      {% for room in rooms %}
+      <option value="{{ room.id }}">{{ room.name }} ({{ room.get_room_type_display }}, до {{ room.capacity }} чел.)</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label class="form-label" for="event_date">Дата начала (ДД-ММ-ГГГГ)</label>
+      <input class="form-control" id="event_date" name="event_date" placeholder="19-05-2026" pattern="\d{2}-\d{2}-\d{4}" required>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label" for="event_time">Время (ЧЧ:ММ)</label>
+      <input type="time" class="form-control" id="event_time" name="event_time" value="10:00" required>
+    </div>
+  </div>
+  <div class="mb-3 mt-3">
+    <label class="form-label" for="payment_method">Способ оплаты</label>
+    <select class="form-select" id="payment_method" name="payment_method">
+      {% for val, label in payment_choices %}
+      <option value="{{ val }}">{{ label }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary mt-3">Отправить заявку</button>
+</form>
+{% endblock %}

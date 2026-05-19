@@ -1,0 +1,16 @@
+body.mockup-page {
+  max-width: 390px;
+  margin: 0 auto;
+  min-height: 844px;
+  background: #f2f4f6;
+  border-left: 1px solid #d8dde3;
+  border-right: 1px solid #d8dde3;
+}
+
+.mockup-label {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #888;
+  padding: 4px;
+  background: #e8e8e8;
+}
